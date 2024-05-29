@@ -17,7 +17,7 @@ public class Dieta {
 
     @Override
     public String toString() {
-        return "Dieta{" +
+        return "\nDieta{" +
                 "id=" + id +
                 ", empleado:'" + empleado + '\'' +
                 ", departamento:'" + dptmt + '\'' +

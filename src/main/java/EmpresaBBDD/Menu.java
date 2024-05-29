@@ -13,7 +13,7 @@ public class Menu {
         Conexion con = new Conexion();
         while (opcion != 6) {
             System.out.println("Menu de Usuarios, por favor escoja una opción:");
-            System.out.println("1. Añadir una dieta\n2. Mostrar las dietas de Informática de más de 30€\n3. Aumentar el valor de las dietas de Ventas en un 10%\n4. Salir");
+            System.out.println("1. Añadir una dieta\n2. Mostrar las dietas de Informática de más de 30€\n3. Aumentar el valor de las dietas de Ventas en un 10%\n4. Mostrar todas las dietas\n5. Salir");
             System.out.println("Opcion escogida: ");
             while (continuar == false){
                 try{
@@ -40,6 +40,9 @@ public class Menu {
                     con.aumentarDietas();
                     break;
                 case 4:
+                    System.out.println(con.mostrarDietas());
+                    break;
+                case 5:
                     break;
             }
         }

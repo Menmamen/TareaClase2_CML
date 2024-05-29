@@ -59,33 +59,10 @@ public class Conexion {
 
     public void crearDieta() {
         Scanner sc = new Scanner(System.in);
-        int opcion = 0;
-        boolean continuar = false;
-        String dptmt = "";
+
         System.out.println("Ha escogido agregar una dieta, por favor, ingrese el nombre del empleado: ");
         String empleado = sc.nextLine();
-
-        System.out.println("Seleccione un departamento: \n\t1. Informatica\n\t2. Ventas\n\t3. Recursos Humanos");
-        while (continuar == false){
-            try{
-                opcion = sc.nextInt();
-                if (opcion >= 1 && opcion <= 3){
-                    continuar = true;
-                }else {
-                    System.out.println("Opcion no valida, por favor introduce solo un numero valido");
-                }
-            }catch(Exception e){
-                System.out.println("Opcion no valida, por favor introduce solo un numero valido");
-                sc.next();
-            }
-        }
-        if (opcion == 1){
-            dptmt = "Informatica";
-        }else if (opcion == 2){
-            dptmt = "Ventas";
-        }else{
-            dptmt = "Recursos Humanos";
-        }
+        String dptmt = seleccionarDptmt();
 
         System.out.println("Ingrese la cantidad en euros (hasta dos decimales): ");
         float euros = sc.nextFloat();
@@ -107,6 +84,34 @@ public class Conexion {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+    private String seleccionarDptmt() {
+        Scanner sc = new Scanner(System.in);
+        int opcion = 0;
+        boolean continuar = false;
+        String dptmt;
+        System.out.println("Seleccione un departamento: \n\t1. Informatica\n\t2. Ventas\n\t3. Recursos Humanos");
+        while (continuar == false){
+            try{
+                opcion = sc.nextInt();
+                if (opcion >= 1 && opcion <= 3){
+                    continuar = true;
+                }else {
+                    System.out.println("Opcion no valida, por favor introduce solo un numero valido");
+                }
+            }catch(Exception e){
+                System.out.println("Opcion no valida, por favor introduce solo un numero valido");
+                sc.next();
+            }
+        }
+        if (opcion == 1){
+            dptmt = "Informatica";
+        }else if (opcion == 2){
+            dptmt = "Ventas";
+        }else{
+            dptmt = "Recursos Humanos";
+        }
+        return dptmt;
     }
 
     public String mostrarDietasInformatica() {
@@ -137,6 +142,39 @@ public class Conexion {
 
         }
         return lista;
+    }
+
+    public String mostrarDietas() {
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet rs = null;
+        String lista = null;
+        System.out.println("Ha escogido mostrar todas las dietas.");
+        String departamento = seleccionarDptmt();
+        try {
+            cn = conectar();
+            stm = cn.createStatement();
+            String query = "SELECT * FROM Dietas WHERE departamento LIKE '" + departamento + "';";
+            rs = stm.executeQuery(query);
+
+            ArrayList<Dieta> dietas = new ArrayList<>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("empleado");
+                String dptmt = rs.getString("departamento");
+                float euros = rs.getFloat("euros");
+                String concepto = rs.getString("concepto");
+
+                dietas.add(new Dieta(id, nombre, dptmt, euros, concepto));
+            }
+            lista = "Dietas del departamento  " + dietas;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return lista;
+
     }
 
     public void aumentarDietas(){
