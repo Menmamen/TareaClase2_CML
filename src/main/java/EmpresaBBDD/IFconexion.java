@@ -1,7 +1,6 @@
 package EmpresaBBDD;
 
 public interface IFconexion {
-    public void conectar();
     public void iniciarBBDD();
     public void crearDieta();
     public String mostrarDietasInformatica();
