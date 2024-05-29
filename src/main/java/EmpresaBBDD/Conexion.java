@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Conexion {
     private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3308/databaseClase?allowPublicKeyRetrieval=true&useSSL=false";
+    private static final String URL = "jdbc:mysql://localhost:3309/Empresa?allowPublicKeyRetrieval=true&useSSL=false";
     private static final String USUARIO = "root";
     private static final String CLAVE = "1234";
 
@@ -28,13 +28,13 @@ public class Conexion {
         try {
             cn = conectar();
             if (cn != null) {
-                if (!tablaBBDD(cn, "Usuarios")){
+                if (!tablaBBDD(cn, "Dietas")){
                     stm = cn.createStatement();
-                    stm.executeUpdate("CREATE TABLE Usuarios (DNI VARCHAR(12) NOT NULL, nombre VARCHAR(45), pais VARCHAR(45), PRIMARY KEY (DNI))");
-                    System.out.println("La tabla Usuarios ha sido creada");
+                    stm.executeUpdate("CREATE TABLE Dietas (id INT(10) NOT NULL, empleado VARCHAR(100), departamento VARCHAR(100), euros FLOAT(10), concepto VARCHAR(150), PRIMARY KEY (id))");
+                    System.out.println("La tabla Dietas ha sido creada");
                 }else {
                     stm = cn.createStatement();
-                    System.out.println("La tabla Usuarios ya existe");
+                    System.out.println("La tabla ya existe");
                 }
             }
         }catch (SQLException e){
