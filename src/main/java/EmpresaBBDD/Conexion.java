@@ -1,6 +1,7 @@
 package EmpresaBBDD;
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class Conexion {
     private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
@@ -30,7 +31,7 @@ public class Conexion {
             if (cn != null) {
                 if (!tablaBBDD(cn, "Dietas")){
                     stm = cn.createStatement();
-                    stm.executeUpdate("CREATE TABLE Dietas (id INT(10) NOT NULL, empleado VARCHAR(100), departamento VARCHAR(100), euros FLOAT(10), concepto VARCHAR(150), PRIMARY KEY (id))");
+                    stm.executeUpdate("CREATE TABLE Dietas (id INT(10) NOT NULL AUTO_INCREMENT, empleado VARCHAR(100), departamento VARCHAR(100), euros FLOAT, concepto VARCHAR(150), PRIMARY KEY (id))");
                     System.out.println("La tabla Dietas ha sido creada");
                 }else {
                     stm = cn.createStatement();
@@ -53,5 +54,32 @@ public class Conexion {
             e.printStackTrace();
         }
         return resultado;
+    }
+
+    public void crearDieta() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ha escogido agregar una dieta, por favor, ingrese el nombre del empleado: ");
+        String nombre = sc.nextLine();
+        System.out.println("Ingrese el nombre del departamento: ");
+        String dptmt = sc.nextLine();
+        System.out.println("Ingrese la cantidad en euros (hasta dos decimales): ");
+        float euros = sc.nextFloat();
+        System.out.println("Introduzca el concepto: ");
+        String concepto = sc.nextLine();
+
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet rs = null;
+
+        try {
+            cn = conectar();
+            stm = cn.createStatement();
+            String query = "INSERT INTO Dietas (empleado, departamento, euros, concepto) VALUES ('" + nombre + "', '" + dptmt + "', '" + euros + "', '" + concepto + "');";
+            stm.executeUpdate(query);
+            System.out.println("Dieta creada correctamente.");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
