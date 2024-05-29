@@ -1,6 +1,7 @@
 package EmpresaBBDD;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Conexion {
@@ -81,5 +82,33 @@ public class Conexion {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public String mostrarUsuarios() {
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet rs = null;
+        String lista = null;
+        try {
+            cn = conectar();
+            stm = cn.createStatement();
+            String query = "SELECT * FROM Usuarios";
+            rs = stm.executeQuery(query);
+
+            ArrayList<Usuario> usuarios = new ArrayList<>();
+            while (rs.next()) {
+                String dni = rs.getString("DNI");
+                String nombre = rs.getString("nombre");
+                String pais = rs.getString("pais");
+
+                usuarios.add(new Usuario(dni, nombre, pais));
+            }
+            lista = "Usuarios: " + usuarios;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return lista;
     }
 }
