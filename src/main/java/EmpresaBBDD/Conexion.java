@@ -60,7 +60,7 @@ public class Conexion {
     public void crearDieta() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ha escogido agregar una dieta, por favor, ingrese el nombre del empleado: ");
-        String nombre = sc.nextLine();
+        String empleado = sc.nextLine();
         System.out.println("Ingrese el nombre del departamento: ");
         String dptmt = sc.nextLine();
         System.out.println("Ingrese la cantidad en euros (hasta dos decimales): ");
@@ -75,7 +75,7 @@ public class Conexion {
         try {
             cn = conectar();
             stm = cn.createStatement();
-            String query = "INSERT INTO Dietas (empleado, departamento, euros, concepto) VALUES ('" + nombre + "', '" + dptmt + "', '" + euros + "', '" + concepto + "');";
+            String query = "INSERT INTO Dietas (empleado, departamento, euros, concepto) VALUES ('" + empleado + "', '" + dptmt + "', '" + euros + "', '" + concepto + "');";
             stm.executeUpdate(query);
             System.out.println("Dieta creada correctamente.");
 
@@ -84,7 +84,7 @@ public class Conexion {
         }
     }
 
-    public String mostrarUsuarios() {
+    public String mostrarDietasInformatica() {
         Connection cn = null;
         Statement stm = null;
         ResultSet rs = null;
@@ -92,23 +92,42 @@ public class Conexion {
         try {
             cn = conectar();
             stm = cn.createStatement();
-            String query = "SELECT * FROM Usuarios";
+            String query = "SELECT * FROM Dietas WHERE departamento LIKE 'Informatica' AND euros > 30;";
             rs = stm.executeQuery(query);
 
-            ArrayList<Usuario> usuarios = new ArrayList<>();
+            ArrayList<Dieta> dietas = new ArrayList<>();
             while (rs.next()) {
-                String dni = rs.getString("DNI");
-                String nombre = rs.getString("nombre");
-                String pais = rs.getString("pais");
+                int id = rs.getInt("id");
+                String nombre = rs.getString("empleado");
+                String dptmt = rs.getString("departamento");
+                float euros = rs.getFloat("euros");
+                String concepto = rs.getString("concepto");
 
-                usuarios.add(new Usuario(dni, nombre, pais));
+                dietas.add(new Dieta(id, nombre, dptmt, euros, concepto));
             }
-            lista = "Usuarios: " + usuarios;
+            lista = "Dietas del departamento de informática superiores a 30€: " + dietas;
 
         } catch (SQLException e) {
             e.printStackTrace();
 
         }
         return lista;
+    }
+
+    public void aumentarDietas(){
+        Connection cn = null;
+        Statement stm = null;
+        ResultSet rs = null;
+        try {
+            cn = conectar();
+            stm = cn.createStatement();
+            String query = "UPDATE Dietas SET euros = euros*1.1 WHERE departamento LIKE 'Ventas';";
+            stm.executeUpdate(query);
+            System.out.println("Dietas actualizadas correctamente.");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
     }
 }
