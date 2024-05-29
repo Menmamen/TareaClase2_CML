@@ -59,12 +59,37 @@ public class Conexion {
 
     public void crearDieta() {
         Scanner sc = new Scanner(System.in);
+        int opcion = 0;
+        boolean continuar = false;
+        String dptmt = "";
         System.out.println("Ha escogido agregar una dieta, por favor, ingrese el nombre del empleado: ");
         String empleado = sc.nextLine();
-        System.out.println("Ingrese el nombre del departamento: ");
-        String dptmt = sc.nextLine();
+
+        System.out.println("Seleccione un departamento: \n\t1. Informatica\n\t2. Ventas\n\t3. Recursos Humanos");
+        while (continuar == false){
+            try{
+                opcion = sc.nextInt();
+                if (opcion >= 1 && opcion <= 3){
+                    continuar = true;
+                }else {
+                    System.out.println("Opcion no valida, por favor introduce solo un numero valido");
+                }
+            }catch(Exception e){
+                System.out.println("Opcion no valida, por favor introduce solo un numero valido");
+                sc.next();
+            }
+        }
+        if (opcion == 1){
+            dptmt = "Informatica";
+        }else if (opcion == 2){
+            dptmt = "Ventas";
+        }else{
+            dptmt = "Recursos Humanos";
+        }
+
         System.out.println("Ingrese la cantidad en euros (hasta dos decimales): ");
         float euros = sc.nextFloat();
+        sc.nextLine();
         System.out.println("Introduzca el concepto: ");
         String concepto = sc.nextLine();
 
