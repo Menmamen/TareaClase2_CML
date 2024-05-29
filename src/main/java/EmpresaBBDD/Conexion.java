@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Conexion {
+public class Conexion implements IFconexion{
     private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3309/Empresa?allowPublicKeyRetrieval=true&useSSL=false";
     private static final String USUARIO = "root";
